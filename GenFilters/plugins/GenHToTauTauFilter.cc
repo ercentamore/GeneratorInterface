@@ -53,7 +53,7 @@ bool GenHToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
     if ( abs(iGen->daughter(0)->pdgId()) != 15 || abs(iGen->daughter(1)->pdgId()) != 15 ) continue;
     if ( iGen->daughter(0)->pt() < tauPtCut_ && iGen->daughter(1)->pt() < tauPtCut_ ) continue;
-    if ( iGen->daughter(0)->eta() > tauEtaCut_ || iGen->daughter(1)->eta() > tauEtaCut_ ) continue;
+    if ( abs(iGen->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->eta() > tauEtaCut_ )) continue;
     float deltaeta = fabs(iGen->daughter(0)->eta()-iGen->daughter(1)->eta());
     float deltaphi = fabs(iGen->daughter(0)->phi()-iGen->daughter(1)->phi());
     float deltaR = sqrt(deltaeta*deltaeta+deltaphi*deltaphi);
