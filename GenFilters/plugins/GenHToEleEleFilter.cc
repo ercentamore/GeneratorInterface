@@ -56,7 +56,7 @@ bool GenHToEleEleFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
     if ( abs(iGen->daughter(0)->pdgId()) != 11 || abs(iGen->daughter(1)->pdgId()) != 11 ) continue;
     if ( iGen->daughter(0)->pt() < elePtCut_ && iGen->daughter(1)->pt() < elePtCut_ ) continue;
-    if ( iGen->daughter(0)->eta() > eleEtaCut_ || iGen->daughter(1)->eta() > eleEtaCut_ ) continue;
+    if ( abs(iGen->daughter(0)->eta()) > eleEtaCut_ || abs(iGen->daughter(1)->eta()) > eleEtaCut_ ) continue;
     float deltaeta = fabs(iGen->daughter(0)->eta()-iGen->daughter(1)->eta());
     float deltaphi = fabs(iGen->daughter(0)->phi()-iGen->daughter(1)->phi());
     float deltaR = sqrt(deltaeta*deltaeta+deltaphi*deltaphi);
