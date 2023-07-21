@@ -56,7 +56,7 @@ bool GenUpsilonToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm:
     if ( abs(iGen->pdgId()) != 553 || iGen->numberOfDaughters() != 2 ) continue;
     if ( abs(iGen->daughter(0)->pdgId()) != 15 || abs(iGen->daughter(1)->pdgId()) != 15 ) continue;
     if ( iGen->daughter(0)->pt() < tauPtCut_ && iGen->daughter(1)->pt() < tauPtCut_ ) continue;
-    if ( iGen->daughter(0)->eta() > tauEtaCut_ || iGen->daughter(1)->eta() > tauEtaCut_ ) continue;
+    if ( abs(iGen->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->eta()) > tauEtaCut_ ) continue;
     float deltaeta = fabs(iGen->daughter(0)->eta()-iGen->daughter(1)->eta());
     float deltaphi = fabs(iGen->daughter(0)->phi()-iGen->daughter(1)->phi());
     float deltaR = sqrt(deltaeta*deltaeta+deltaphi*deltaphi);
@@ -65,7 +65,7 @@ bool GenUpsilonToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm:
     std::cout<<"========================================================event passed filter======================================================="<<endl;
     std::cout << "deltsR  :   " << deltaR << endl;
   }
-  
+
   return (UpsilonToTauTauCandidate >= nUpsilons_);  //Return boolean whether event passes cut values
 }
 
