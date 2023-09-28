@@ -80,6 +80,7 @@ bool GenHToAATo4TauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Eve
     if ( deltaR1 > taudRCut_ || deltaR2 > taudRCut_) continue; // meged taus
     // if ( deltaR1 < taudRCut_ || deltaR2 < taudRCut_) continue; // unmerged taus
     // std::cout << " deltaR1:------- " << deltaR1 << "deltaR2:------- "<<deltaR2 << endl;
+    // std::cout << " A1 mass:------- " << iGen->daughter(0).mass() << "A2 mass:------- "<<iGen->daughter(1).mass() << endl;
     ++HToTauTauCandidate;
     // std::cout << " Passed Through GenHToAATo4TauFilter " << endl;
     std::cout<<"========================================================event passed filter======================================================="<<endl;

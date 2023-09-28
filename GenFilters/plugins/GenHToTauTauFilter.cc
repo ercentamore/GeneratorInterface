@@ -53,12 +53,17 @@ bool GenHToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
     if ( abs(iGen->daughter(0)->pdgId()) != 15 || abs(iGen->daughter(1)->pdgId()) != 15 ) continue;
     if ( iGen->daughter(0)->pt() < tauPtCut_ && iGen->daughter(1)->pt() < tauPtCut_ ) continue;
-    if ( abs(iGen->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->eta() > tauEtaCut_ )) continue;
+    if ( abs(iGen->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->eta()) > tauEtaCut_ ) continue;
     float deltaeta = fabs(iGen->daughter(0)->eta()-iGen->daughter(1)->eta());
     float deltaphi = fabs(iGen->daughter(0)->phi()-iGen->daughter(1)->phi());
     float deltaR = sqrt(deltaeta*deltaeta+deltaphi*deltaphi);
+    // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  A mass  :   " << iGen->mass()  << endl;
+    std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  A mass  :   " << iGen->mass()<<" <<< Tau1 mass  "<<iGen->daughter(0)->mass()<<" <<< Tau2 mass:  "<<iGen->daughter(1)->mass() << endl;
+    std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A charge  <<<<<"<<iGen->charge()<<" <<< Tau1 charge  "<<iGen->daughter(0)->charge()<<" <<< Tau2 charge:  "<<iGen->daughter(1)->charge()<< std::endl;
+    std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A pdgId  <<<<<"<<iGen->pdgId()<<" <<< Tau1 pdgId  "<<iGen->daughter(0)->pdgId()<<" <<< Tau2 pdgId:  "<<iGen->daughter(1)->pdgId()<< std::endl;
     if ( deltaR > taudRCut_ ) continue;
     ++HToTauTauCandidate;
+
     std::cout<<"========================================================event passed filter======================================================="<<endl;
     std::cout << "deltsR  :   " << deltaR  << endl;
   }
