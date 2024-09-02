@@ -85,8 +85,8 @@ bool GenAToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     int binX = A_mass_pt->GetXaxis()->FindBin(a_mass);
     int binY = A_mass_pt->GetYaxis()->FindBin(a_pt);
     double binContent = A_mass_pt->GetBinContent(binX, binY);
-    // std::cout << "binX :" << binX <<"   binY :  "<< binY<<std::endl;
-    // std::cout << "Number of events in the bin: " << binContent <<"   mass:  "<< a_mass<<"  pt :  "<<a_pt<< std::endl;
+    std::cout << "binX :" << binX <<"   binY :  "<< binY<<std::endl;
+    std::cout << "Number of events in the bin: " << binContent <<"   mass:  "<< a_mass<<"  pt :  "<<a_pt<< std::endl;
     if (binContent > n_Events_) continue;
     ++AToTauTauCandidate;
 
