@@ -61,7 +61,8 @@ bool GenHToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  A mass  :   " << iGen->mass()<<" <<< Tau1 mass  "<<iGen->daughter(0)->mass()<<" <<< Tau2 mass:  "<<iGen->daughter(1)->mass() << endl;
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A charge  <<<<<"<<iGen->charge()<<" <<< Tau1 charge  "<<iGen->daughter(0)->charge()<<" <<< Tau2 charge:  "<<iGen->daughter(1)->charge()<< std::endl;
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A pdgId  <<<<<"<<iGen->pdgId()<<" <<< Tau1 pdgId  "<<iGen->daughter(0)->pdgId()<<" <<< Tau2 pdgId:  "<<iGen->daughter(1)->pdgId()<< std::endl;
-    if ( deltaR > taudRCut_ ) continue;
+    // if ( deltaR > taudRCut_ ) continue; //merged
+    // if ( deltaR < taudRCut_ || deltaR > 4) continue; //Unmerged
     ++HToTauTauCandidate;
 
     std::cout<<"========================================================event passed filter======================================================="<<endl;
