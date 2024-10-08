@@ -17,6 +17,7 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/JetReco/interface/GenJetCollection.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
 //Class declaration
 class GenHToAATo4TauFilter : public edm::global::EDFilter<> {
 public:
@@ -58,17 +59,12 @@ bool GenHToAATo4TauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Eve
     // if ( (iGen->daughter(0)->daughter(0)->pt() < tauPtCut_ || iGen->daughter(0)->daughter(1)->pt() < tauPtCut_) || (iGen->daughter(1)->daughter(0)->pt() < tauPtCut_ || iGen->daughter(1)->daughter(1)->pt() < tauPtCut_ )) continue;
     // if ( (abs(iGen->daughter(0)->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(0)->daughter(1)->eta()) > tauEtaCut_) && (abs(iGen->daughter(1)->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->daughter(1)->eta()) > tauEtaCut_)) continue;
     if ( (abs(iGen->daughter(0)->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(0)->daughter(1)->eta()) > tauEtaCut_) || (abs(iGen->daughter(1)->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->daughter(1)->eta()) > tauEtaCut_)) continue;
-    // float deltaeta1 = fabs(iGen->daughter(0)->daughter(0)->eta()-iGen->daughter(0)->daughter(1)->eta());
-    // float deltaphi1 = fabs(iGen->daughter(0)->daughter(0)->phi()-iGen->daughter(0)->daughter(1)->phi());
-    // float deltaeta2 = fabs(iGen->daughter(1)->daughter(0)->eta()-iGen->daughter(1)->daughter(1)->eta());
-    // float deltaphi2 = fabs(iGen->daughter(1)->daughter(0)->phi()-iGen->daughter(1)->daughter(1)->phi());
-    //
-    // float deltaR1 = sqrt(deltaeta1*deltaeta1 + deltaphi1*deltaphi1);
-    // float deltaR2 = sqrt(deltaeta2*deltaeta2 + deltaphi2*deltaphi2);
+    float deltaR1 = reco::deltaR( iGen->daughter(0)->daughter(0)->eta(),iGen->daughter(0)->daughter(0)->phi(), iGen->daughter(0)->daughter(1)->eta(),iGen->daughter(0)->daughter(1)->phi());
+    float deltaR2 = reco::deltaR( iGen->daughter(1)->daughter(0)->eta(),iGen->daughter(1)->daughter(0)->phi(), iGen->daughter(1)->daughter(1)->eta(),iGen->daughter(1)->daughter(1)->phi());
     // if ( deltaR1 > taudRCut_ || deltaR2 > taudRCut_) continue; // meged taus
     // if (!( deltaR1 > taudRCut_ && deltaR2 > taudRCut_)) continue; // unmerged taus
-    // std::cout << " deltaR1:------- " << deltaR1 << "deltaR2:------- "<<deltaR2 << endl;
-    // std::cout << " A1 mass:------- " << iGen->daughter(0).mass() << "A2 mass:------- "<<iGen->daughter(1).mass() << endl;
+    std::cout << " deltaR1:------- " << deltaR1 <<"               "<< "deltaR2:------- "<<deltaR2 << endl;
+    std::cout << " A1 mass:------- " << iGen->daughter(0)->mass()<<"          " << "A2 mass:------- "<<iGen->daughter(1)->mass() << endl;
     ++HToTauTauCandidate;
     // std::cout << " Passed Through GenHToAATo4TauFilter " << endl;
     std::cout<<"========================================================event passed filter======================================================="<<endl;
