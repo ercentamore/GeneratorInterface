@@ -50,17 +50,17 @@ bool GenAToTauTauFilter::filter(edm::StreamID, edm::Event& evt, const edm::Event
   //Loop over all taus in Event
   unsigned HToTauTauCandidate = 0;
   for (reco::GenParticleCollection::const_iterator iGen = genParticles->begin(); iGen != genParticles->end(); ++iGen) {
-    std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Initialize filter GenAToTauTauFilter  :   " << endl;
+    // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  Initialize filter GenAToTauTauFilter  :   " << endl;
     if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2 ) continue;
     if ( abs(iGen->daughter(0)->pdgId()) != 15 || abs(iGen->daughter(1)->pdgId()) != 15 ) continue;
-    if ( iGen->daughter(0)->pt() < tauPtCut_ && iGen->daughter(1)->pt() < tauPtCut_ ) continue;
+    if ( iGen->daughter(0)->pt() < tauPtCut_ || iGen->daughter(1)->pt() < tauPtCut_ ) continue;
     if ( abs(iGen->daughter(0)->eta()) > tauEtaCut_ || abs(iGen->daughter(1)->eta()) > tauEtaCut_ ) continue;
     float deltaR = reco::deltaR( iGen->daughter(0)->eta(),iGen->daughter(0)->phi(), iGen->daughter(1)->eta(),iGen->daughter(1)->phi());
     // std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  A mass  :   " << iGen->mass()  << endl;
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  A mass  :   " << iGen->mass()<<" <<< Tau1 mass  "<<iGen->daughter(0)->mass()<<" <<< Tau2 mass:  "<<iGen->daughter(1)->mass() << endl;
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A charge  <<<<<"<<iGen->charge()<<" <<< Tau1 charge  "<<iGen->daughter(0)->charge()<<" <<< Tau2 charge:  "<<iGen->daughter(1)->charge()<< std::endl;
     std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A pdgId  <<<<<"<<iGen->pdgId()<<" <<< Tau1 pdgId  "<<iGen->daughter(0)->pdgId()<<" <<< Tau2 pdgId:  "<<iGen->daughter(1)->pdgId()<< std::endl;
-    if ( deltaR > taudRCut_ ) continue; //merged
+    // if ( deltaR > taudRCut_ ) continue; //merged
     // if ( deltaR < taudRCut_ || deltaR > 4) continue; //Unmerged
     ++HToTauTauCandidate;
 
