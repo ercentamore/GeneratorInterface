@@ -40,8 +40,8 @@ double assign_dr_value(double mass, double deltsR_cut, double a_pt) {
         return deltsR_cut+0.16;
     }
     else {
-        std::cerr << "Mass value out of range!" << std::endl;
-        return deltsR_cut; // Error value if out of range
+        std::cerr << "Default value selected " << std::endl;
+        return deltsR_cut; 
     }
 }
 
