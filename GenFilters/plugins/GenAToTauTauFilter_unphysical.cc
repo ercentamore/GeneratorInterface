@@ -20,24 +20,24 @@
 
 #include <iostream>
 
-double assign_dr_value(double mass, double deltsR_cut) {
-    if (mass >= 1.2 && mass < 1.6) {
-        return deltsR_cut-0.001;
+double assign_dr_value(double mass, double deltsR_cut, double a_pt) {
+    if (mass >= 1.2 && mass < 1.6 && a_pt <= 50) {
+        return deltsR_cut+0.01;
     }
-    else if (mass >= 1.6 && mass < 2.0) {
-        return deltsR_cut+0.02;
+    else if (mass >= 1.6 && mass < 2.0 && a_pt <= 90) {
+        return deltsR_cut+0.03;
     }
-    else if (mass >= 2.0 && mass < 2.4) {
+    else if (mass >= 2.0 && mass < 2.4 && a_pt <= 130) {
         return deltsR_cut+0.04;
     }
-    else if (mass >= 2.4 && mass < 2.8) {
-        return deltsR_cut+0.05;
+    else if (mass >= 2.4 && mass < 2.8 && a_pt <= 150) {
+        return deltsR_cut+0.10;
     }
-    else if (mass >= 2.8 && mass < 3.2) {
-        return deltsR_cut+0.06;
+    else if (mass >= 2.8 && mass < 3.2 && a_pt <= 180) {
+        return deltsR_cut+0.14;
     }
-    else if (mass >= 3.2 && mass <= 3.6) {
-        return deltsR_cut+0.08;
+    else if (mass >= 3.2 && mass <= 3.6 && a_pt <= 200) {
+        return deltsR_cut+0.16;
     }
     else {
         std::cerr << "Mass value out of range!" << std::endl;
@@ -90,7 +90,7 @@ bool GenAToTauTauFilter_unphysical::filter(edm::StreamID, edm::Event& evt, const
     // std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A charge  <<<<<"<<iGen->charge()<<" <<< Tau1 charge  "<<iGen->daughter(0)->charge()<<" <<< Tau2 charge:  "<<iGen->daughter(1)->charge()<< std::endl;
     // std::cout << "  >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> A pdgId  <<<<<"<<iGen->pdgId()<<" <<< Tau1 pdgId  "<<iGen->daughter(0)->pdgId()<<" <<< Tau2 pdgId:  "<<iGen->daughter(1)->pdgId()<< std::endl;
     std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  deltaR  :   " << deltaR  << endl;
-    double final_taudRCut = assign_dr_value(iGen->mass(), taudRCut_);
+    double final_taudRCut = assign_dr_value(iGen->mass(), taudRCut_,iGen->pt() );
     std::cout << ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  final_taudRCut  :   " << final_taudRCut  << endl;
     if ( deltaR > final_taudRCut ) continue; //merged
     ++HToTauTauCandidate;
