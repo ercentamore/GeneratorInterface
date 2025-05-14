@@ -1,5 +1,3 @@
-
-
 //System include files
 #include <memory>
 #include <vector>
@@ -37,7 +35,7 @@ GenHToAATo2Tau2PhotonFilter::GenHToAATo2Tau2PhotonFilter(const edm::ParameterSet
       tauEtaCut_(params.getParameter<double>("tauEtaCut")),
       phoPtCut_(params.getParameter<double>("phoPtCut")),
       phoEtaCut_(params.getParameter<double>("phoEtaCut")),
-      nHiggs_(params.getParameter<double>("nHiggs")),
+      nHiggs_(params.getParameter<int>("nHiggs")),
       phoDrCut_(params.getParameter<double>("phoDrCut")) {}
 
 bool GenHToAATo2Tau2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const edm::EventSetup& params) const {
@@ -55,13 +53,13 @@ bool GenHToAATo2Tau2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const e
   // std::cout << " Applying GenHToAATo2Tau2PhotonFilter " << endl;
   for (reco::GenParticleCollection::const_iterator iGen = genParticles->begin(); iGen != genParticles->end(); ++iGen) {
     if ( abs(iGen->pdgId()) != 35 || iGen->numberOfDaughters() != 2) continue;
-    if ( !((abs(iGen->daughter(0)->pdgId()) == 25 && abs(iGen->daughter(1)->pdgId()) == 26)|| (abs(iGen->daughter(0)->pdgId()) == 26 && abs(iGen->daughter(1)->pdgId()) == 25)) )  continue;
+    if ( !((abs(iGen->daughter(0)->pdgId()) == 25 && abs(iGen->daughter(1)->pdgId()) == 36)|| (abs(iGen->daughter(0)->pdgId()) == 36 && abs(iGen->daughter(1)->pdgId()) == 25)) )  continue;
     if ( abs(iGen->daughter(0)->pdgId()) == 25 ){
         if ((abs(iGen->daughter(0)->daughter(0)->pdgId()) != 22) || (abs(iGen->daughter(0)->daughter(1)->pdgId()) != 22)) continue;
         if ((iGen->daughter(0)->daughter(0)->pt() < phoPtCut_) || (iGen->daughter(0)->daughter(1)->pt() < phoPtCut_)) continue;
         if ((abs(iGen->daughter(0)->daughter(0)->eta()) > phoEtaCut_) || (abs(iGen->daughter(0)->daughter(1)->eta()) > phoEtaCut_)) continue;
       }
-    if ( abs(iGen->daughter(0)->pdgId()) == 26 ){
+    if ( abs(iGen->daughter(0)->pdgId()) == 36 ){
       if ((abs(iGen->daughter(0)->daughter(0)->pdgId()) != 15) || (abs(iGen->daughter(0)->daughter(1)->pdgId()) != 15)) continue;
       if ((iGen->daughter(0)->daughter(0)->pt() < tauPtCut_) || (iGen->daughter(0)->daughter(1)->pt() < tauPtCut_)) continue;
       if ((abs(iGen->daughter(0)->daughter(0)->eta()) > tauEtaCut_) || (abs(iGen->daughter(0)->daughter(1)->eta()) > tauEtaCut_)) continue;
@@ -71,7 +69,7 @@ bool GenHToAATo2Tau2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const e
       if ((iGen->daughter(1)->daughter(0)->pt() < phoPtCut_) || (iGen->daughter(1)->daughter(1)->pt() < phoPtCut_)) continue;
       if ((abs(iGen->daughter(1)->daughter(0)->eta()) > phoEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > phoEtaCut_)) continue;
     }
-    if ( abs(iGen->daughter(1)->pdgId()) == 26 ){
+    if ( abs(iGen->daughter(1)->pdgId()) == 36 ){
       if ((abs(iGen->daughter(1)->daughter(0)->pdgId()) != 15) || (abs(iGen->daughter(1)->daughter(1)->pdgId() != 15))) continue;
       if ((iGen->daughter(1)->daughter(0)->pt() < tauPtCut_) || (iGen->daughter(1)->daughter(1)->pt() < tauPtCut_)) continue;
       if ((abs(iGen->daughter(1)->daughter(0)->eta()) > tauEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > tauEtaCut_)) continue;
