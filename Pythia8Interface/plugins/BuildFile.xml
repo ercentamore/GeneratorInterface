@@ -33,6 +33,13 @@
   <flags EDM_PLUGIN="1"/>
 </library>
 
+<library  name="GeneratorInterfacePythia8HtoAAhook"
+          file="HtoAAhook.cc">
+  <use name="GeneratorInterface/Pythia8Interface"/>
+  <use name="pythia8"/>
+  <flags EDM_PLUGIN="1"/>
+</library>
+
 <library file="SLHA*.cc" name="GeneratorInterfacePythia8SLHAReader">
   <use name="root"/>
 </library>
