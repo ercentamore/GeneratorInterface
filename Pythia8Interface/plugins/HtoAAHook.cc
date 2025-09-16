@@ -58,8 +58,8 @@ static std::vector<int> load_or_init_csv1d(const std::string &filename,
 
   std::string line, cell;
   size_t idx = 0;
-  std::getline(ifs, line))
-  std::stringstream ss(line);
+  std::getline(ifs, line);
+  std::stringstream ss(line){
     while (idx < occ.size() && std::getline(ss, cell, ',')){
         occ[idx++] = std::stoi(cell);
   }
