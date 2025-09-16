@@ -76,9 +76,9 @@ static std::vector<double> arange(double start, double stop, double step) {
 static inline double sqr(double x) { return x * x; }
 
 // The actual Userhook
-class HtoAAhook : public UserHooks {
+class HtoAAHook : public UserHooks {
 public:
-    explicit HtoAAhook(const edm::ParameterSet &ps)
+    explicit HtoAAHook(const edm::ParameterSet &ps)
             : minM_(ps.getParameter<double>("minMass")),
                 maxM_(ps.getParameter<double>("maxMass")),
                 res_(ps.getParameter<double>("massRes")),
@@ -185,4 +185,4 @@ private:
     std::uniform_real_distribution<> rng_;
 };
 
-REGISTER_USERHOOK(HtoAAhook);
+REGISTER_USERHOOK(HtoAAHook);
