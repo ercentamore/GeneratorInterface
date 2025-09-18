@@ -59,34 +59,36 @@ static std::vector<int> load_or_init_csv1d(const std::string &filename,
   std::string line, cell;
   size_t idx = 0;
   std::getline(ifs, line);
-  std::stringstream ss(line){
+  std::stringstream ss(line);
     while (idx < occ.size() && std::getline(ss, cell, ',')){
         occ[idx++] = std::stoi(cell);
   }
   return occ;
 }
 
-static std::vector<double> arange(double start, double stop, double step) {
+static std::vector<double> arange(double start, double stop, double step){
     std::vector<double> v;
     for (double x = start; x < stop - 0.5 * step; x += step)
         v.push_back(x);
     return v;
 }
 
-static inline double sqr(double x) { return x * x; }
+static inline double sqr(double x){
+    return x * x;
+}
 
 // The actual Userhook
 class HtoAAHook : public UserHooks {
 public:
-    explicit HtoAAHook(const edm::ParameterSet &ps)
-            : minM_(ps.getParameter<double>("minMass")),
+    explicit HtoAAHook(const edm::ParameterSet &ps){
+                minM_(ps.getParameter<double>("minMass")),
                 maxM_(ps.getParameter<double>("maxMass")),
                 res_(ps.getParameter<double>("massRes")),
                 csv_(ps.getUntrackedParameter<std::string>("csvFile", "")),
                 idM_(ps.getParameter<int>("motherID")),
                 idD1_(ps.getParameter<int>("daughter1ID")),
                 idD2_(ps.getParameter<int>("daughter2ID")),
-                rng_(0.0, 1.0) {
+                rng_(0.0, 1.0),
             // Build mass grid and corresponding inverse-PDF table.
             bins_ = arange(minM_, maxM_ + res_, res_);
             auto occ1d = load_or_init_csv1d(csv_, bins_.size());
@@ -99,7 +101,7 @@ public:
     // bool canVetoProcessLevel() override { return true; }
     bool canVetoProcessLevel() override { return true; }
 
-    void fixupTwoBodyDecays(Event& event, int iMom, int iDau1, int iDau2) {
+    void fixupTwoBodyDecays(Event& event, int iMom, int iDau1, int iDau2){
         double MM = event[iMom].m();
         double m1 = event[iDau1].m();
         double m2 = event[iDau2].m();
