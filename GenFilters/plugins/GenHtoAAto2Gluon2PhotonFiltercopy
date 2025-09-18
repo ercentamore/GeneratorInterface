@@ -39,7 +39,7 @@ GenHToAATo2Gluon2PhotonFilter::GenHToAATo2Gluon2PhotonFilter(const edm::Paramete
         phoEtaCut_(params.getParameter<double>("phoEtaCut")),
         //diPhoPtCut_(params.getParameter<double>("diPhoPtCut")),
         //diTauPtCut_(params.getParameter<double>("diTauPtCut")),
-        nHiggs_(params.getParameter<int>("nHiggs")),
+        nHiggs_(params.getParameter<int>("nHiggs")) {}
         //phoDrCut_(params.getParameter<double>("phoDrCut")) {}
 
 bool GenHToAATo2Gluon2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const edm::EventSetup& params) const {
@@ -73,7 +73,7 @@ bool GenHToAATo2Gluon2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const
             const reco::Candidate* pho2 = iGen->daughter(1)->daughter(1);
             if ((abs(iGen->daughter(1)->daughter(0)->pdgId()) != 22) || (abs(iGen->daughter(1)->daughter(1)->pdgId()) != 22)) continue;
             if ((abs(iGen->daughter(1)->daughter(0)->eta()) > phoEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > phoEtaCut_)) continue;
-
+        }
         if ( abs(iGen->daughter(1)->pdgId()) == 35 ){
             if ((abs(iGen->daughter(1)->daughter(0)->pdgId()) != 21) || (abs(iGen->daughter(1)->daughter(1)->pdgId() != 21))) continue;
             if ((abs(iGen->daughter(1)->daughter(0)->eta()) > gluEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > gluEtaCut_)) continue;
