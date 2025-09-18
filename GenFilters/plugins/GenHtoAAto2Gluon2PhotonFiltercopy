@@ -34,12 +34,12 @@ private:
 GenHToAATo2Gluon2PhotonFilter::GenHToAATo2Gluon2PhotonFilter(const edm::ParameterSet& params)
     : token_(consumes<reco::GenParticleCollection>(params.getParameter<edm::InputTag>("src"))),
         //gluPtCut_(params.getParameter<double>("tauPtCut")),
-        gluEtaCut_(params.getParameter<double>("gluEtaCut")),
+        gluEtaCut_(params.getParameter<double>("gluEtaCut_")),
         //phoPtCut_(params.getParameter<double>("phoPtCut")),
-        phoEtaCut_(params.getParameter<double>("phoEtaCut")),
+        phoEtaCut_(params.getParameter<double>("phoEtaCut_")),
         //diPhoPtCut_(params.getParameter<double>("diPhoPtCut")),
         //diTauPtCut_(params.getParameter<double>("diTauPtCut")),
-        nHiggs_(params.getParameter<int>("nHiggs")) {}
+        nHiggs_(params.getParameter<int>("nHiggs_")) {}
         //phoDrCut_(params.getParameter<double>("phoDrCut")) {}
 
 bool GenHToAATo2Gluon2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const edm::EventSetup& params) const {
