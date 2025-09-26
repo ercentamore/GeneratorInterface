@@ -1,0 +1,88 @@
+//System include files
+#include <memory>
+#include <vector>
+
+//User include files
+#include "FWCore/Framework/interface/global/EDFilter.h"
+#include "FWCore/Framework/interface/Frameworkfwd.h"
+#include "FWCore/Framework/interface/Event.h"
+#include "FWCore/Framework/interface/MakerMacros.h"
+
+#include "FWCore/ParameterSet/interface/ParameterSet.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+
+#include "DataFormats/Common/interface/Handle.h"
+#include "DataFormats/HepMCCandidate/interface/GenParticle.h"
+#include "DataFormats/JetReco/interface/GenJetCollection.h"
+
+#include "DataFormats/Math/interface/deltaR.h"
+
+//Class declaration
+class GenHToAATo2Gluon2PhotonFilter : public edm::global::EDFilter<> {
+public:
+    explicit GenHToAATo2Gluon2PhotonFilter(const edm::ParameterSet&);
+
+private:
+    bool filter(edm::StreamID, edm::Event&, const edm::EventSetup&) const override;
+
+    //Member data
+    const edm::EDGetTokenT<reco::GenParticleCollection> token_;
+    const double gluEtaCut_, phoEtaCut_, nHiggs_, ;
+};
+
+//Constructor
+GenHToAATo2Gluon2PhotonFilter::GenHToAATo2Gluon2PhotonFilter(const edm::ParameterSet& params)
+    : token_(consumes<reco::GenParticleCollection>(params.getParameter<edm::InputTag>("src"))),
+        //gluPtCut_(params.getParameter<double>("tauPtCut")),
+        gluEtaCut_(params.getParameter<double>("gluEtaCut_")),
+        //phoPtCut_(params.getParameter<double>("phoPtCut")),
+        phoEtaCut_(params.getParameter<double>("phoEtaCut_")),
+        //diPhoPtCut_(params.getParameter<double>("diPhoPtCut")),
+        //diTauPtCut_(params.getParameter<double>("diTauPtCut")),
+        nHiggs_(params.getParameter<int>("nHiggs_")) {}
+        //phoDrCut_(params.getParameter<double>("phoDrCut")) {}
+
+bool GenHToAATo2Gluon2PhotonFilter::filter(edm::StreamID, edm::Event& evt, const edm::EventSetup& params) const {
+    using namespace std;
+    using namespace edm;
+    using namespace reco;
+
+    //Read GenParticles Collection from Event
+    edm::Handle<reco::GenParticleCollection> genParticles;
+    evt.getByToken(token_, genParticles);
+
+    //Loop over all taus in Event
+    unsigned HTo2Gluon2PhotonCandidate = 0;
+    std::cout << " Applying GenHToAATo2Gluon2PhotonFilter " << endl;
+    for (reco::GenParticleCollection::const_iterator iGen = genParticles->begin(); iGen != genParticles->end(); ++iGen) {
+        if ( abs(iGen->pdgId()) != 25 || iGen->numberOfDaughters() != 2) continue;
+        if ( !((abs(iGen->daughter(0)->pdgId()) == 36 && abs(iGen->daughter(1)->pdgId()) == 35)|| (abs(iGen->daughter(0)->pdgId()) == 35 && abs(iGen->daughter(1)->pdgId()) == 36)) )  continue;
+        if ( abs(iGen->daughter(0)->pdgId()) == 36 ){
+            const reco::Candidate* pho1 = iGen->daughter(0)->daughter(0);
+            const reco::Candidate* pho2 = iGen->daughter(0)->daughter(1);
+            if ((abs(iGen->daughter(0)->daughter(0)->pdgId()) != 22) || (abs(iGen->daughter(0)->daughter(1)->pdgId()) != 22)) continue;
+            if ((abs(iGen->daughter(0)->daughter(0)->eta()) > phoEtaCut_) || (abs(iGen->daughter(0)->daughter(1)->eta()) > phoEtaCut_)) continue;
+          
+        }
+        if ( abs(iGen->daughter(0)->pdgId()) == 35 ){
+            if ((abs(iGen->daughter(0)->daughter(0)->pdgId()) != 21) || (abs(iGen->daughter(0)->daughter(1)->pdgId()) != 21)) continue;
+            if ((abs(iGen->daughter(0)->daughter(0)->eta()) > gluEtaCut_) || (abs(iGen->daughter(0)->daughter(1)->eta()) > gluEtaCut_)) continue;
+        }
+        if ( abs(iGen->daughter(1)->pdgId()) == 36 ){
+            const reco::Candidate* pho1 = iGen->daughter(1)->daughter(0);
+            const reco::Candidate* pho2 = iGen->daughter(1)->daughter(1);
+            if ((abs(iGen->daughter(1)->daughter(0)->pdgId()) != 22) || (abs(iGen->daughter(1)->daughter(1)->pdgId()) != 22)) continue;
+            if ((abs(iGen->daughter(1)->daughter(0)->eta()) > phoEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > phoEtaCut_)) continue;
+        }
+        if ( abs(iGen->daughter(1)->pdgId()) == 35 ){
+            if ((abs(iGen->daughter(1)->daughter(0)->pdgId()) != 21) || (abs(iGen->daughter(1)->daughter(1)->pdgId() != 21))) continue;
+            if ((abs(iGen->daughter(1)->daughter(0)->eta()) > gluEtaCut_) || (abs(iGen->daughter(1)->daughter(1)->eta()) > gluEtaCut_)) continue;
+        }
+        ++HTo2Gluon2PhotonCandidate;
+        std::cout<<"========================================================event passed filter======================================================="<<endl;
+    }
+    return (HTo2Gluon2PhotonCandidate >= nHiggs_);  //Return boolean whether event passes cut values
+}
+
+// Define module as a plug-in
+DEFINE_FWK_MODULE(GenHToAATo2Gluon2PhotonFilter);
